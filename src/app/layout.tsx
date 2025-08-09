@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={poppins.variable}>
         <body
-          className={`${poppins.variable} antialiased bg-gradient-to-b from-[#3454D1] to-[#2843AF]`}
+          className={'font-sans bg-gradient-to-b from-[#3454D1] to-[#2843AF]'}
       >
         {children}
       </body>
