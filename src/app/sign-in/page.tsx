@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from 'next/image';
 
 export default function Home() {
@@ -10,6 +11,9 @@ export default function Home() {
         width={180}
         height={56}
       />
+      <Button variant="secondary" size="lg" className="mt-8">
+        Entrar com Google
+      </Button>
     </div>
   );
 }
