@@ -87,4 +87,8 @@
   /* aplica tokens */
   * { @apply border-border; }
   body { @apply min-h-screen bg-background text-foreground antialiased font-sans; }
+
+  button {
+    cursor: pointer;
+  }
 }
