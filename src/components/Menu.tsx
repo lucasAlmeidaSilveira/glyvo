@@ -1,3 +1,5 @@
+'use client';
+
 import { IoClose, IoMenu } from "react-icons/io5";
 import { Button } from "./ui/button";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
@@ -6,10 +8,12 @@ import Link from "next/link";
 import Logo from "./Logo";
 import { FaFileLines } from "react-icons/fa6";
 import { ImExit } from "react-icons/im";
+import { useState } from "react";
 
 export default function Menu() {
+  const [open, setOpen] = useState(false);
   return (
-    <Sheet >
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant='secondary' size='icon' className="rounded-full">
           <IoMenu size={24} />
@@ -31,11 +35,11 @@ export default function Menu() {
             </div>
           </div>
           <div className="flex flex-col gap-3 items-end">
-            <Link href="/" className="flex items-center gap-1">
+            <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1">
               <Logo variant="icon" size={24} />
               <span className="text-lg font-semibold">Enviar glicemia</span>
             </Link>
-            <Link href="/" className="flex items-center gap-1">
+            <Link href="/glicemias" onClick={() => setOpen(false)} className="flex items-center gap-1">
               <FaFileLines size={24} className="text-white bg-primary rounded-full p-1" />
               <span className="text-lg font-semibold">Glicemias</span>
             </Link>

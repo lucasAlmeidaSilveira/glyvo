@@ -15,9 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { getTime } from '@/tools/tools';
-import { Toaster } from './ui/sonner';
-import { CheckIcon } from 'lucide-react';
-import Logo from './Logo';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const FormSchema = z.object({
   dataHora: z.string().min(1, {
@@ -63,8 +61,7 @@ export function InputForm() {
           </strong>
         </span>
       ),
-      icon: <Logo variant='icon' />,
-      position: 'top-center',
+      icon: <FaCheckCircle color="green" size={24} />,
     });
 
     // Limpar o formulário após envio
