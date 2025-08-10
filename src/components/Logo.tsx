@@ -1,13 +1,13 @@
 import Image from 'next/image';
 
-export default function Logo({ variant = 'full' }: { variant?: 'full' | 'icon' }) {
+export default function Logo({ variant = 'full', size = 180 }: { variant?: 'full' | 'icon', size?: number }) {
   return (
     <Image
       aria-hidden
       src={variant === 'full' ? '/logoFullWhite.svg' : '/logoIconPrimary.svg'}
       alt='Glyvo logo'
-      width={180}
-      height={56}
+      width={size}
+      height={size}
     />
   );
 }

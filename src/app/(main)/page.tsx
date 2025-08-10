@@ -3,14 +3,17 @@
 import { InputForm } from "@/components/InputForm";
 import { Card, CardContent } from '@/components/ui/card';
 import { redirect } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   // trocar para false quando o login estiver funcionando
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  if (!isLoggedIn) {
-    redirect('/sign-in');
-  }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      redirect('/sign-in');
+    }
+  }, [isLoggedIn]);
 
   return (
     <Card className='mx-4 bg-white'>

@@ -1,5 +1,7 @@
+import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function MainLayout({
   children,
@@ -13,6 +15,8 @@ export default function MainLayout({
         <Menu />
       </div>
       {children}
+      <Footer />
+      <Toaster />
     </div>
   );
 }

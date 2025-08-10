@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { Toaster } from "sonner";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -21,12 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={poppins.variable}>
+    <html lang="pt-BR" className={poppins.variable} suppressHydrationWarning>
       <body
         className={'font-sans bg-gradient-to-b from-[#3454D1] to-[#2843AF]'}
       >
         {children}
-        <Toaster />
       </body>
     </html>
   );

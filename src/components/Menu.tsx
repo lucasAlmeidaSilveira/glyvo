@@ -1,6 +1,11 @@
-import { IoMenu } from "react-icons/io5";
+import { IoClose, IoMenu } from "react-icons/io5";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import Link from "next/link";
+import Logo from "./Logo";
+import { FaFileLines } from "react-icons/fa6";
+import { ImExit } from "react-icons/im";
 
 export default function Menu() {
   return (
@@ -12,8 +17,36 @@ export default function Menu() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle></SheetTitle>
         </SheetHeader>
+        <div className="flex flex-col items-end gap-4 mt-2 mx-4">
+          <div className="flex flex-col items-end gap-2">
+            <Avatar className="w-12 h-12">
+              <AvatarImage src="https://avatars.githubusercontent.com/u/72694905?v=4" />
+              <AvatarFallback>LA</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col items-end">
+              <p className="text-sm font-semibold">Lucas Almeida da Silveira</p>
+              <p className="text-xs text-muted-foreground">lucas.asilveira.sh@gmail.com </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3 items-end">
+            <Link href="/" className="flex items-center gap-1">
+              <Logo variant="icon" size={24} />
+              <span className="text-lg font-semibold">Enviar glicemia</span>
+            </Link>
+            <Link href="/" className="flex items-center gap-1">
+              <FaFileLines size={24} className="text-white bg-primary rounded-full p-1" />
+              <span className="text-lg font-semibold">Glicemias</span>
+            </Link>
+          </div>
+        </div>
+        <SheetFooter>
+          <Button variant='outline' className="flex items-center gap-2">
+            <ImExit size={24} />
+            Sair da conta
+          </Button>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
