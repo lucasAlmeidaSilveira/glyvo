@@ -55,7 +55,13 @@ export function InputForm() {
 
     toast('Dados enviados com sucesso!', {
       description: (
-        <span className='text-sm'>Antes do almoço <strong className='text-lg'>| {data.glicemia}<span className="text-sm">mg/dL</span></strong></span>
+        <span className='text-sm'>
+          Antes do almoço{' '}
+          <strong className='text-lg'>
+            | {data.glicemia}
+            <span className='text-sm'>mg/dL</span>
+          </strong>
+        </span>
       ),
       icon: <Logo variant='icon' />,
       position: 'top-center',
