@@ -9,9 +9,21 @@ import Logo from "./Logo";
 import { FaFileLines } from "react-icons/fa6";
 import { ImExit } from "react-icons/im";
 import { useState } from "react";
+import { User } from "firebase/auth";
 
-export default function Menu() {
+interface MenuProps {
+  user: User | null;
+  logout: () => void;
+}
+
+export default function Menu({ user, logout }: MenuProps) {
   const [open, setOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+  }
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -26,12 +38,12 @@ export default function Menu() {
         <div className="flex flex-col items-end gap-4 mt-2 mx-4">
           <div className="flex flex-col items-end gap-2">
             <Avatar className="w-12 h-12">
-              <AvatarImage src="https://avatars.githubusercontent.com/u/72694905?v=4" />
-              <AvatarFallback>LA</AvatarFallback>
+              <AvatarImage src={user?.photoURL || ''} />
+              <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-end">
-              <p className="text-sm font-semibold">Lucas Almeida da Silveira</p>
-              <p className="text-xs text-muted-foreground">lucas.asilveira.sh@gmail.com </p>
+              <p className="text-sm font-semibold">{user?.displayName}</p>
+              <p className="text-xs text-muted-foreground">{user?.email}</p>
             </div>
           </div>
           <div className="flex flex-col gap-3 items-end">
@@ -46,7 +58,7 @@ export default function Menu() {
           </div>
         </div>
         <SheetFooter>
-          <Button variant='outline' className="flex items-center gap-2">
+          <Button variant='outline' className="flex items-center gap-2" onClick={handleLogout}>
             <ImExit size={24} />
             Sair da conta
           </Button>

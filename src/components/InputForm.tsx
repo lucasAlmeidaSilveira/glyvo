@@ -55,13 +55,12 @@ export function InputForm() {
       description: (
         <span className='text-sm'>
           Antes do almoço{' '}
-          <strong className='text-lg'>
+          <strong className='text-md'>
             | {data.glicemia}
             <span className='text-sm'>mg/dL</span>
           </strong>
         </span>
       ),
-      icon: <FaCheckCircle color="green" size={24} />,
     });
 
     // Limpar o formulário após envio
