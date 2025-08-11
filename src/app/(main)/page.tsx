@@ -16,8 +16,8 @@ export default function Home() {
   }, [isLoggedIn]);
 
   return (
-    <Card className='mx-4 bg-white'>
-      <CardContent className='flex flex-col items-center justify-center'>
+    <Card className='mx-4 bg-white p-2 max-w-[320px]'>
+      <CardContent className='flex flex-col items-center justify-center p-2'>
         <InputForm />
       </CardContent>
     </Card> 

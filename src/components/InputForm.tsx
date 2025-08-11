@@ -51,7 +51,7 @@ export function InputForm() {
       minute: '2-digit',
     });
 
-    toast('Dados enviados com sucesso!', {
+    toast('Glicemia salva!', {
       description: (
         <span className='text-sm'>
           Antes do almoço{' '}
