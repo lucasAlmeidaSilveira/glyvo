@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from './Loading';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -31,10 +32,7 @@ export default function ProtectedRoute({
   // Mostra loading enquanto verifica
   if (isLoading) {
     return (
-      <div className='flex flex-col items-center justify-center h-screen gap-6'>
-        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-white'></div>
-        <p className='text-white text-lg'>Carregando...</p>
-      </div>
+      <Loading />
     );
   }
 

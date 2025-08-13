@@ -14,8 +14,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { registerReading } from "@/api";
 import { getTime } from '@/tools/tools';
-import { FaCheckCircle } from 'react-icons/fa';
+import { ReadingRequest } from "@/types/reading";
+import { UserProps } from "@/contexts/AuthContext";
+import { useState } from "react";
+import { redirect } from "next/navigation";
 
 const FormSchema = z.object({
   dataHora: z.string().min(1, {
@@ -26,12 +30,14 @@ const FormSchema = z.object({
     .min(1, {
       message: 'Por favor, digite o valor da glicemia.',
     })
+    .max(3)
     .refine(val => !isNaN(Number(val)) && Number(val) > 0, {
       message: 'A glicemia deve ser um número válido maior que zero.',
     }),
 });
 
-export function InputForm() {
+export function InputForm({ user }: { user: UserProps }) {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -40,31 +46,42 @@ export function InputForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Converter a string datetime-local para um objeto Date
     const dataHora = new Date(data.dataHora);
 
-    // Formatar a data e hora para exibição
-    const dataFormatada = dataHora.toLocaleDateString('pt-BR');
-    const horaFormatada = dataHora.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const readingRequest: ReadingRequest = {
+      userId: user.userId as string,
+      date: dataHora,
+      value: Number(data.glicemia),
+    };
 
-    toast('Glicemia salva!', {
+    setIsLoading(true);
+    const response = await registerReading(readingRequest);
+    const dataResponse = response.data;
+
+    toast.success(response.message, { 
       description: (
         <span className='text-sm'>
-          Antes do almoço{' '}
+          {dataResponse.meal}{' '}
           <strong className='text-md'>
-            | {data.glicemia}
-            <span className='text-sm'>mg/dL</span>
+            | {dataResponse.value} mg/dL
           </strong>
         </span>
       ),
+      action: {
+        label: (
+          <Button size='sm' variant='outline' className='text-xs'>Ver glicemias</Button>
+        ),
+        onClick: () => {
+          redirect('/glicemias');
+        },
+      },
     });
 
     // Limpar o formulário após envio
     form.reset();
+    setIsLoading(false);
   }
 
   return (
@@ -97,7 +114,7 @@ export function InputForm() {
                   placeholder='Digite sua glicemia'
                   type='number'
                   min='1'
-                  step='0.1'
+                  step='1'
                   className='w-full text-center p-5'
                   {...field}
                 />
@@ -107,8 +124,13 @@ export function InputForm() {
           )}
         />
 
-        <Button type='submit' className='w-full text-lg py-6 uppercase'>
-          Enviar
+        <Button type='submit' className='w-full text-lg py-6 uppercase' disabled={isLoading}>
+          {isLoading ? (
+            <div className='flex items-center gap-2'>
+              <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white`} />
+              Enviando...
+            </div>
+          ) : 'Enviar'}
         </Button>
       </form>
     </Form>
