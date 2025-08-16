@@ -3,12 +3,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, User } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { getUser } from "@/api";
-import { redirect } from "next/navigation";
+import { createUser, getUser } from "@/api";
+import { UserDB, UserProps, UserRequest } from "@/types/user";
 
-export type UserProps = User & {
-  userId?: string;
-}
 interface AuthContextType {
   user: UserProps | null;
   isLoading: boolean;
@@ -28,8 +25,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userData = await getUser(user.email as string);
-        setUser({ ...user, userId: userData.id });
+        let userData = await getUser(user.email as string);
+        
+        if(!userData) {
+          const userRequest: UserRequest = {
+            name: user.displayName as string,
+            email: user.email as string,
+          };
+          userData = await createUser(userRequest);
+        }
+        setUser({ ...user, userId: userData.id } as UserProps);
       }
       setIsLoading(false);
     });

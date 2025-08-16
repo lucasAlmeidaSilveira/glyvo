@@ -1,9 +1,32 @@
 import { ReadingRequest, ReadingResponse, ReadingsResponse } from "../types/reading";
+import type { UserDB, UserRequest, UserResponse } from "@/types/user";
 
 export async function getUser(email: string) {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${email}`);
-    const { data } = await response.json();
+    if(response.status === 404) {
+      return null;
+    }
+    const { data }: UserResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function createUser(body: UserRequest) {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    const { data }: UserResponse = await response.json();
+
     return data;
   } catch (error) {
     console.error(error);
