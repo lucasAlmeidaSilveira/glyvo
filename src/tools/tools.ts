@@ -17,7 +17,7 @@ export function getTime(date: Date): string {
 
 export function formatDate(date: Date): string {
   const now = new Date();
-  const dateNewDate = toUTC(new Date(date));
+  const dateNewDate = new Date(date);
   const year = dateNewDate.getFullYear();
   const month = String(dateNewDate.getMonth() + 1).padStart(2, '0');
   const day = String(dateNewDate.getDate()).padStart(2, '0');
