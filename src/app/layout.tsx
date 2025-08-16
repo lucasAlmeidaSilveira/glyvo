@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { Analytics } from "@vercel/analytics/next"
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -29,6 +30,7 @@ export default function RootLayout({
           className={'font-sans bg-gradient-to-b from-[#3454D1] to-[#2843AF]'}
         >
           {children}
+          <Analytics />
         </body>
       </html>
     </AuthProvider>
