@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { registerReading } from "@/api";
 import { getTime } from '@/tools/tools';
 import { ReadingRequest } from "@/types/reading";
-import { UserProps } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { redirect } from "next/navigation";
 
@@ -36,7 +36,9 @@ const FormSchema = z.object({
     }),
 });
 
-export function InputForm({ user }: { user: UserProps }) {
+export function InputForm() {
+  const { user } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -51,7 +53,7 @@ export function InputForm({ user }: { user: UserProps }) {
     const dataHora = new Date(data.dataHora);
 
     const readingRequest: ReadingRequest = {
-      userId: user.userId as string,
+      userId: user?.userId as string,
       date: dataHora,
       value: Number(data.glicemia),
     };

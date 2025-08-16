@@ -1,24 +1,18 @@
 import { toUTC } from "@/lib";
 
 export function getTime(date: Date): string {
-  const formatToBrazilTime = (date: Date): string => {
-    // Converte para o fuso horário do Brasil
-    const brazilTime = new Date(
-      date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
-    );
+  // Usar a data atual se nenhuma data for fornecida
+  const currentDate = date || new Date();
+  
+  // Obter os componentes da data no fuso horário local
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
 
-    const year = brazilTime.getFullYear();
-    const month = String(brazilTime.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda
-    const day = String(brazilTime.getDate()).padStart(2, '0'); // Adiciona zero à esquerda
-    const hours = String(brazilTime.getHours()).padStart(2, '0'); // Formato 24h
-    const minutes = String(brazilTime.getMinutes()).padStart(2, '0');
-
-    return `${year}-${day}-${month}T${hours}:${minutes}`;
-  };
-
-  const formattedDate = formatToBrazilTime(date);
-
-  return formattedDate;
+  const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+  return formatted;
 }
 
 export function formatDate(date: Date): string {
