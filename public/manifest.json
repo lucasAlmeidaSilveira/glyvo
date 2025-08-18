@@ -1,0 +1,42 @@
+{
+  "name": "Glyvo - Controle fácil, vida leve",
+  "short_name": "Glyvo",
+  "description": "Organize suas medições de glicose de forma simples, rápida e segura",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3454D1",
+  "theme_color": "#3454D1",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/logoIconPrimary.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logoIconBlack.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["health", "medical", "lifestyle"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Nova Medição",
+      "short_name": "Nova",
+      "description": "Adicionar nova medição de glicose",
+      "url": "/glicemias",
+      "icons": [
+        {
+          "src": "/logoIconPrimary.svg",
+          "sizes": "any"
+        }
+      ]
+    }
+  ]
+}
