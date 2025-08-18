@@ -18,8 +18,6 @@ export const metadata: Metadata = {
   keywords:
     'app de glicemia, controle de glicose, diário glicêmico, aplicativo diabetes, registro de glicemia, PDF glicemia, monitor glicêmico digital',
   manifest: '/manifest.json',
-  themeColor: '#3454D1',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -48,10 +46,10 @@ export default function RootLayout({
       <html lang='pt-BR' className={poppins.variable} suppressHydrationWarning>
         <head>
           <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/logoIconPrimary.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/logoIconPrimary.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/logoIconPrimary.png" />
-          <link rel="apple-touch-icon" sizes="167x167" href="/logoIconPrimary.png" />
+          <link rel="apple-touch-icon" href="/logo-180.png" />
+          <link rel="apple-touch-icon" sizes="152x152" href="/logo-152.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/logo-180.png" />
+          <link rel="apple-touch-icon" sizes="167x167" href="/logo-167.png" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="apple-mobile-web-app-title" content="Glyvo" />
