@@ -11,16 +11,28 @@ export function InstallBanner() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
+    // Verificar se o usuário já fechou o banner
+    const hasUserDismissed = localStorage.getItem('glyvo-install-banner-dismissed');
+    
     // Detectar se é iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIOS(isIOSDevice);
 
-    // Mostrar banner se não estiver instalado e puder instalar
-    if (!isInstalled && (canInstall || isIOSDevice)) {
+    // Mostrar banner apenas se:
+    // 1. Não estiver instalado
+    // 2. Puder instalar OU for iOS
+    // 3. Usuário não tiver fechado o banner anteriormente
+    if (!isInstalled && (canInstall || isIOSDevice) && !hasUserDismissed) {
       setIsVisible(true);
     }
   }, [canInstall, isInstalled]);
+
+  const handleDismiss = () => {
+    // Salvar no localStorage que o usuário fechou o banner
+    localStorage.setItem('glyvo-install-banner-dismissed', 'true');
+    setIsVisible(false);
+  };
 
   if (!isVisible) return null;
 
@@ -54,10 +66,11 @@ export function InstallBanner() {
             </Button>
           )}
           <Button
-            onClick={() => setIsVisible(false)}
+            onClick={handleDismiss}
             variant="ghost"
             size="sm"
             className="text-gray-500 hover:text-gray-700"
+            title="Não mostrar novamente"
           >
             <X className="h-4 w-4" />
           </Button>
