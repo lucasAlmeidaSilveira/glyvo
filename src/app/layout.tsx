@@ -46,10 +46,10 @@ export default function RootLayout({
       <html lang='pt-BR' className={poppins.variable} suppressHydrationWarning>
         <head>
           <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icons/logo-180.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/icons/logo-152.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/icons/logo-180.png" />
-          <link rel="apple-touch-icon" sizes="167x167" href="/icons/logo-167.png" />
+          <link rel="apple-touch-icon" href="/icons/logo-200.png" />
+          <link rel="apple-touch-icon" sizes="152x152" href="/icons/logo-200.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/icons/logo-200.png" />
+          <link rel="apple-touch-icon" sizes="167x167" href="/icons/logo-200.png" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="apple-mobile-web-app-title" content="Glyvo" />
