@@ -14,12 +14,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { registerReading } from "@/api";
+import { registerReading } from '@/api';
 import { getTime } from '@/tools/tools';
-import { ReadingRequest } from "@/types/reading";
-import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
-import { redirect } from "next/navigation";
+import { ReadingRequest } from '@/types/reading';
+import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
+import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
   dataHora: z.string().min(1, {
@@ -62,18 +62,18 @@ export function InputForm() {
     const response = await registerReading(readingRequest);
     const dataResponse = response.data;
 
-    toast.success(response.message, { 
+    toast.success(response.message, {
       description: (
         <span className='text-sm'>
           {dataResponse.meal}{' '}
-          <strong className='text-md'>
-            | {dataResponse.value} mg/dL
-          </strong>
+          <strong className='text-md'>| {dataResponse.value} mg/dL</strong>
         </span>
       ),
       action: {
         label: (
-          <Button size='sm' variant='outline' className='text-xs'>Ver glicemias</Button>
+          <Button size='sm' variant='outline' className='text-xs'>
+            Ver glicemias
+          </Button>
         ),
         onClick: () => {
           redirect('/glicemias');
@@ -126,13 +126,23 @@ export function InputForm() {
           )}
         />
 
-        <Button type='submit' className='w-full text-lg py-6 uppercase' disabled={isLoading}>
+        <Button
+          type='submit'
+          className='w-full text-lg py-6 uppercase'
+          disabled={isLoading}
+        >
           {isLoading ? (
             <div className='flex items-center gap-2'>
-              <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-white`} />
+              <img
+                src='/logoIconPrimary.svg'
+                alt='Logo'
+                className='w-8 h-8 animate-spin'
+              />
               Enviando...
             </div>
-          ) : 'Enviar'}
+          ) : (
+            'Enviar'
+          )}
         </Button>
       </form>
     </Form>

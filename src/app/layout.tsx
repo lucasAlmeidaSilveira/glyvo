@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from '@vercel/analytics/next';
 import { InstallBanner } from '@/components/InstallBanner';
 
 const poppins = Poppins({
@@ -45,18 +45,33 @@ export default function RootLayout({
     <AuthProvider>
       <html lang='pt-BR' className={poppins.variable} suppressHydrationWarning>
         <head>
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icons/logo-200.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/icons/logo-200.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/icons/logo-200.png" />
-          <link rel="apple-touch-icon" sizes="167x167" href="/icons/logo-200.png" />
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="apple-mobile-web-app-title" content="Glyvo" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="theme-color" content="#3454D1" />
-          <meta name="msapplication-TileColor" content="#3454D1" />
-          <meta name="msapplication-TileImage" content="/logoIconPrimary.svg" />
+          <link rel='manifest' href='/manifest.json' />
+          <link rel='apple-touch-icon' href='/icons/logo-200.png' />
+          <link
+            rel='apple-touch-icon'
+            sizes='152x152'
+            href='/icons/logo-200.png'
+          />
+          <link
+            rel='apple-touch-icon'
+            sizes='180x180'
+            href='/icons/logo-200.png'
+          />
+          <link
+            rel='apple-touch-icon'
+            sizes='167x167'
+            href='/icons/logo-200.png'
+          />
+          <meta name='apple-mobile-web-app-capable' content='yes' />
+          <meta
+            name='apple-mobile-web-app-status-bar-style'
+            content='default'
+          />
+          <meta name='apple-mobile-web-app-title' content='Glyvo' />
+          <meta name='mobile-web-app-capable' content='yes' />
+          <meta name='theme-color' content='#3454D1' />
+          <meta name='msapplication-TileColor' content='#3454D1' />
+          <meta name='msapplication-TileImage' content='/logoIconPrimary.svg' />
         </head>
         <body
           className={'font-sans bg-gradient-to-b from-[#3454D1] to-[#2843AF]'}

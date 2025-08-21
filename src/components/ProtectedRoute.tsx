@@ -27,7 +27,7 @@ export default function ProtectedRoute({
         router.push('/');
       }
     }
-  }, [user, isLoading, requireAuth, router]);
+  }, [user, isLoading, requireAuth]);
 
   // Mostra loading enquanto verifica
   if (isLoading) {
