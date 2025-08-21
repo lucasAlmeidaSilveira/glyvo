@@ -211,7 +211,7 @@ export default function Glicemias() {
   );
 }
 
-export function EditReadingDialog({
+function EditReadingDialog({
   reading,
   onUpdateSuccess,
 }: {
