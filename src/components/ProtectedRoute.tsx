@@ -31,9 +31,7 @@ export default function ProtectedRoute({
 
   // Mostra loading enquanto verifica
   if (isLoading) {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 
   return <>{children}</>;
