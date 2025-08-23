@@ -1,10 +1,17 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, User } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
-import { createUser, getUser } from "@/api";
-import { UserDB, UserProps, UserRequest } from "@/types/user";
+import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  User,
+} from 'firebase/auth';
+import { auth, db } from '@/lib/firebase';
+import { createUser, getUser } from '@/api';
+import { UserDB, UserProps, UserRequest } from '@/types/user';
 
 interface AuthContextType {
   user: UserProps | null;
@@ -14,30 +21,79 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-export const AuthContext = createContext({} as AuthContextType)
+export const AuthContext = createContext({} as AuthContextType);
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        let userData = await getUser(user.email as string);
-        
-        if(!userData) {
-          const userRequest: UserRequest = {
-            name: user.displayName as string,
-            email: user.email as string,
-          };
-          userData = await createUser(userRequest);
-        }
-        setUser({ ...user, userId: userData.id } as UserProps);
+
+  // Função para gerar chave única do storage
+  const getStorageKey = (email: string) => `userData_${email}`;
+
+  // Função para recuperar dados do usuário do sessionStorage
+  const getUserFromStorage = (email: string) => {
+    try {
+      const storageKey = getStorageKey(email);
+      const storedData = sessionStorage.getItem(storageKey);
+      return storedData ? JSON.parse(storedData) : null;
+    } catch (error) {
+      console.warn('Erro ao ler dados do sessionStorage:', error);
+      return null;
+    }
+  };
+
+  // Função para salvar dados do usuário no sessionStorage
+  const saveUserToStorage = (email: string, userData: any) => {
+    try {
+      const storageKey = getStorageKey(email);
+      sessionStorage.setItem(storageKey, JSON.stringify(userData));
+    } catch (error) {
+      console.warn('Erro ao salvar dados no sessionStorage:', error);
+    }
+  };
+
+  // Função para limpar dados do usuário do sessionStorage
+  const clearUserFromStorage = (email: string) => {
+    const storageKey = getStorageKey(email);
+    sessionStorage.removeItem(storageKey);
+  };
+
+  // Função para buscar ou criar dados do usuário
+  const fetchOrCreateUserData = async (firebaseUser: User) => {
+    let userData = getUserFromStorage(firebaseUser.email as string);
+
+    if (!userData) {
+      userData = await getUser(firebaseUser.email as string);
+
+      if (!userData) {
+        const userRequest: UserRequest = {
+          name: firebaseUser.displayName as string,
+          email: firebaseUser.email as string,
+        };
+        userData = await createUser(userRequest);
       }
-      setIsLoading(false);
-    });
+
+      saveUserToStorage(firebaseUser.email as string, userData);
+    }
+
+    return userData;
+  };
+
+  // Função para processar mudança de estado de autenticação
+  const handleAuthStateChange = async (firebaseUser: User | null) => {
+    if (firebaseUser) {
+      const userData = await fetchOrCreateUserData(firebaseUser);
+      setUser({ ...firebaseUser, userId: userData.id } as UserProps);
+    } else {
+      setUser(null);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, handleAuthStateChange);
     return () => unsubscribe();
   }, []);
 
@@ -48,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Erro no login com email:', error);
       throw error;
     }
-  }
+  };
 
   const loginWithGoogle = async () => {
     try {
@@ -62,6 +118,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
+      if (user?.email) {
+        clearUserFromStorage(user.email);
+      }
+
       await signOut(auth);
       setUser(null);
     } catch (error) {
