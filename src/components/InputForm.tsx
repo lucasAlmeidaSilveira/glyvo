@@ -70,11 +70,7 @@ export function InputForm() {
         </span>
       ),
       action: {
-        label: (
-          <Button size='sm' variant='outline' className='text-xs'>
-            Ver glicemias
-          </Button>
-        ),
+        label: 'Ver glicemias',
         onClick: () => {
           redirect('/glicemias');
         },
@@ -128,7 +124,7 @@ export function InputForm() {
 
         <Button
           type='submit'
-          className='w-full text-lg py-6 uppercase'
+          className='w-full text-lg py-6'
           disabled={isLoading}
         >
           {isLoading ? (
