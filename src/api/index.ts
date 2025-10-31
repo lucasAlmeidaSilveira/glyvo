@@ -6,6 +6,7 @@ import {
   ReadingUpdateRequest,
 } from '../types/reading';
 import type { UserDB, UserRequest, UserResponse } from '@/types/user';
+import { SpreadsheetResponse } from "@/types/spreadsheet";
 
 export async function getUser(email: string) {
   try {
@@ -120,6 +121,28 @@ export async function getMeals() {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals`);
     const data: MealsResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function generateSpreadsheet(
+  userId: string,
+  startDate: string,
+  endDate: string
+): Promise<SpreadsheetResponse> {
+  try {
+    // Monta a query string com os parâmetros opcionais
+    const params = new URLSearchParams({ userId, startDate, endDate });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/spreadsheets?${params.toString()}`,
+      {
+        method: 'POST',
+      }
+    );
+    const data: SpreadsheetResponse = await response.json();
     return data;
   } catch (error) {
     console.error(error);

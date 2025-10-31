@@ -35,3 +35,21 @@ export function formatDate(date: Date): string {
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
 }
+
+// Função auxiliar para formatar data para input type="date"
+export function formatDateForInput(date: Date | null | undefined): string {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+    return '';
+  }
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Função auxiliar para converter string de input para Date
+export function parseDateFromInput(value: string): Date | null {
+  if (!value) return null;
+  const date = new Date(value + 'T00:00:00');
+  return !isNaN(date.getTime()) ? date : null;
+}
