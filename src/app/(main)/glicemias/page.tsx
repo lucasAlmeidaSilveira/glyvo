@@ -110,7 +110,7 @@ export default function Glicemias() {
     <div className='flex flex-col gap-4 mx-4'>
       <Card className='bg-white p-4 min-w-[320px] flex'>
         <CardDescription>
-          <ScrollArea className='h-[480px]'>
+          <ScrollArea className='h-[440px]'>
             <div className='flex flex-col gap-2'>
               {isLoading ? (
                 <div className='flex flex-col gap-2'>
@@ -391,7 +391,7 @@ function GenerateSpreadsheetDialog({ userId }: { userId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='secondary'>Gerar planilha</Button>
+        <Button variant='secondary' size='lg'>Gerar planilha</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
