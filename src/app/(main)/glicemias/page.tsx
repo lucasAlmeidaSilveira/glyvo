@@ -377,7 +377,13 @@ function GenerateSpreadsheetDialog({ userId }: { userId: string }) {
           }
           reset();
           setOpen(false);
-          return 'Planilha gerada com sucesso!';
+          return {
+            message: 'Planilha gerada com sucesso!',
+            action: {
+              label: 'Abrir planilha',
+              onClick: () => window.open(response.data.url, '_blank'),
+            }
+          };
         },
         error: 'Erro ao gerar planilha. Tente novamente.',
       });
