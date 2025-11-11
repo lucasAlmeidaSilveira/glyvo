@@ -110,7 +110,7 @@ export default function Glicemias() {
     <div className='flex flex-col gap-4 mx-4'>
       <Card className='bg-white p-4 min-w-[320px] flex'>
         <CardDescription>
-          <ScrollArea className='h-[440px]'>
+          <ScrollArea className='h-[calc(100vh-340px)]'>
             <div className='flex flex-col gap-2'>
               {isLoading ? (
                 <div className='flex flex-col gap-2'>

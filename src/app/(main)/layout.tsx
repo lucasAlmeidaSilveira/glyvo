@@ -1,8 +1,8 @@
 'use client';
 
-import Footer from '@/components/Footer';
 import Logo from '@/components/Logo';
 import Menu from '@/components/Menu';
+import Navbar from "@/components/Navbar";
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Toaster } from '@/components/ui/sonner';
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,7 +17,7 @@ export default function MainLayout({
   
   return (
     <ProtectedRoute requireAuth={true}>
-      <div className='flex flex-col items-center justify-center h-screen gap-6'>
+      <div className='flex flex-col items-center justify-center h-[calc(100vh-96px)] gap-4'>
         <div className='flex items-center justify-between gap-4'>
           <Link href="/">
             <Logo />
@@ -25,8 +25,8 @@ export default function MainLayout({
           {user && <Menu user={user} logout={logout} />}
         </div>
         {children}
-        <Footer />
         <Toaster />
+      <Navbar />
       </div>
     </ProtectedRoute>
   );
