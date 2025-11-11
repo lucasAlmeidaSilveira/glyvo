@@ -1,5 +1,9 @@
 # Glyvo
 
+<div style="background:#ffffff;padding:16px;border-radius:12px;display:inline-block;">
+  <img src="./public/logoFullPrimary.svg" alt="Logo Glyvo" width="360" />
+</div>
+
 Aplicativo web e PWA para registro e acompanhamento de glicemias, pensado para pessoas com diabetes que precisam registrar medições diárias, organizar refeições e gerar relatórios rápidos para o time de saúde.
 
 > 🚧 **Status**: aplicativo em construção ativa. As funcionalidades podem mudar rapidamente enquanto coletamos feedback clínico e refinamos a experiência.
