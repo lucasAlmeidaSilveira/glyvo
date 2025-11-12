@@ -4,72 +4,52 @@
   <img src="./public/logoFullPrimary.svg" alt="Logo Glyvo" width="360" />
 </p>
 
-Aplicativo web e PWA para registro e acompanhamento de glicemias, pensado para pessoas com diabetes que precisam registrar medições diárias, organizar refeições e gerar relatórios rápidos para o time de saúde.
+App web e PWA para anotar e acompanhar glicemias, pensado para quem vive com diabetes, registra medições várias vezes por dia, quer organizar refeições e precisa compartilhar relatórios rápidos com a equipe de saúde.
 
-> 🚧 **Status**: aplicativo em construção ativa. As funcionalidades podem mudar rapidamente enquanto coletamos feedback clínico e refinamos a experiência.
+## Status do projeto
+> 🚧 Em construção...
+- MVP já está rodando em produção.
+- Integrações com APIs externas e Firebase validadas.
+- Foco atual nos testes internos e na coleta de feedback clínico.
+- Desenvolvimento segue ativo: novas features e ajustes de UX aparecem toda semana.
 
-## Visão Geral
+## Objetivo
 
-- **Objetivo**: Centralizar o histórico de glicemias em uma interface simples, com sincronização em nuvem e suporte a instalação como aplicativo.
-- **Público-alvo**: Usuários que monitoram glicemia regularmente e precisam compartilhar evoluções com profissionais.
-- **Arquitetura**: Next.js (App Router) + Firebase Authentication, consumo de API REST própria e componentes UI baseados em Radix/Shadcn.
+- Tornar o registro de glicemia mais ágil, digital e integrado ao fluxo de monitoramento.
+- Facilidade na geração de relatórios de glicemias, prontos para análise de acompanhamento médico.
 
-## Por Que Existe
+## Tecnologias
 
-- Facilitar a vida de pessoas que registram glicemia diversas vezes ao dia.
-- Reduzir a fricção de compartilhar dados com nutricionistas e endocrinologistas.
-- Criar uma experiência consistente em desktop e mobile, com suporte a PWA.
+- **Frontend | Next.js 15 + React 19**: App Router, server components e deploy em Vercel garantindo SSR e experiência PWA.
+- **UI & UX | Tailwind CSS + Radix UI + shadcn**: design system componetizado, com temas próprios e acessibilidade pronta para produção.
+- **Backend | Node.js + TypeScript**: API REST desacoplada (mantida em repositório próprio), validação com Zod, testes automatizados e upload das planilhas via Firebase Storage.
+- **Autenticação & Sessões | Firebase Authentication**: login seguro com providers sociais e refresh transparente.
+- **Dados | PostgreSQL**: modelo relacional que concentra leituras, refeições e relatórios, preparado para replicação e BI.
+- **Observabilidade & Ops | Vercel Analytics**: monitoramento de uso, métricas de performance e alertas rápidos para o time.
 
 ## Destaques do Produto
 
-- Registro guiado de medições com verificação instantânea de consistência.
-- Associação automática das medições ao período da refeição.
-- Histórico completo com filtros, edição e exclusão de leituras.
-- Exportação de dados em planilhas para consultas médicas.
-- Banner inteligente que incentiva a instalação como aplicativo em qualquer dispositivo.
-
-## Experiência do Usuário
-
-- Interface minimalista baseada em cartões e fluxos lineares.
-- Feedback imediato com toasts contextuais para cada ação crítica.
-- Skeletons e estados vazios garantem continuidade mesmo durante carregamentos.
-- Abordagem mobile-first para facilitar o uso durante o dia a dia do paciente.
-
-## Arquitetura em Alto Nível
-
-- **Frontend**: Next.js 15 (App Router) com React 19.
-- **Design System**: Tailwind CSS, Radix UI e componentes shadcn adaptados à identidade Glyvo.
-- **Camada de Dados**: Firebase Authentication + Firestore para identidade, com API REST dedicada para leituras e refeições.
-- **Observabilidade**: Vercel Analytics para métricas básicas de uso.
-
-```text
-Fluxo principal:
-Usuário → AuthContext (Firebase) → API REST (glicemias / refeições) → Interface reativa (hooks + shadcn)
-```
+- Registro guiado das medições com validação instantânea.
+- Associação automática das leituras ao período da refeição.
+- Histórico das medições.
+- Exportação para planilhas.
+- Mobile-first para encaixar no ritmo do dia a dia.
+- Interface minimalista com foco em fluxos lineares.
 
 ## Fluxos Essenciais
 
-- **Registrar glicemia**: formulário validado com React Hook Form + Zod, atribui refeição automaticamente e confirma via toast.
-- **Gerenciar histórico**: listagem paginada com opções de editar, remover e gerar planilhas por intervalo.
-- **Acesso protegido**: `ProtectedRoute` garante que apenas usuários autenticados naveguem pelas telas principais.
-- **Experiência PWA**: hook `usePWA` registra service worker, aciona banners contextuais e monitora instalação.
+- **Registrar glicemia**: formulário com React Hook Form + Zod, associa refeição automaticamente e confirma com toast.
+- **Gerenciar histórico**: listagem paginada com edição, remoção e geração de planilhas por intervalo.
+- **Acesso protegido**: `ProtectedRoute` barra quem não está autenticado.
+- **Experiência PWA**: hook `usePWA` registra service worker, mostra banners e acompanha a instalação.
 
 ## Roadmap Público
 
-- Relatórios gráficos de tendência e variação por período.
-- Insights personalizados para alertar sobre padrões críticos.
-- Modo offline com sincronização posterior das leituras.
-- Internacionalização (pt-BR/inglês) e acessibilidade ampliada.
-
-## Status Atual
-
-- MVP funcional em produção.
-- Integrações com API externas e Firebase validadas.
-- Uso principal direcionado a testes internos e coleta de feedback clínico.
-- Desenvolvimento ativo: novas funcionalidades e ajustes de UX estão em construção contínua.
+- Relatórios gráficos mostrando tendências e variações por período.
+- Insights personalizados para chamar atenção para padrões críticos.
+- Modo offline com sync automático das leituras depois.
+- Internacionalização (pt-BR/inglês) e acessibilidade aprimorada.
 
 ---
 
-Se encontrar algum problema ou tiver sugestões, abra uma issue ou PR. 💙
-
-
+Achou algo estranho ou tem uma ideia bacana? Abre uma issue ou PR e bora conversar. 💙
