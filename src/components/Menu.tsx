@@ -27,6 +27,7 @@ interface MenuProps {
 
 export default function Menu({ user, logout }: MenuProps) {
   const [open, setOpen] = useState(false)
+  if (!user) return null
 
   const handleLogout = () => {
     logout()

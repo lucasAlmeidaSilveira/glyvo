@@ -23,7 +23,7 @@ export default function MainLayout({
           <Link href="/">
             <Logo />
           </Link>
-          {user && <Menu user={user} logout={logout} />}
+          <Menu user={user} logout={logout} />
         </div>
         {children}
         <Toaster />

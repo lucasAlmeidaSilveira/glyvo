@@ -4,8 +4,12 @@ import { BsFileSpreadsheet } from 'react-icons/bs'
 import { IoAddCircle } from 'react-icons/io5'
 import { MdBloodtype } from 'react-icons/md'
 
+import { useAuth } from '@/contexts/AuthContext'
+
 export default function Navbar() {
   const pathname = usePathname()
+  const { user } = useAuth()
+  if (!user) return null
 
   return (
     <div className="bg-primary-foreground fixed bottom-0 flex w-full justify-center px-4 py-2 pb-7 shadow-md">
