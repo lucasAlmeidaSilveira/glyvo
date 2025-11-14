@@ -14,8 +14,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { formatDateData } from '@/tools/tools'
 import { SpreadsheetData } from '@/types/spreadsheet'
 
-import { GenerateSpreadsheetDialog } from '../glicemias/page'
-
 export default function SpreadsheetsPage() {
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(true)

@@ -8,11 +8,64 @@ import {
   signOut,
   User,
 } from 'firebase/auth'
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
 import { createUser, getUser } from '@/api'
-import { auth, db } from '@/lib/firebase'
+import { auth } from '@/lib/firebase'
 import { UserDB, UserProps, UserRequest } from '@/types/user'
+
+const getStorageKey = (email: string) => `userData_${email}`
+
+const getUserFromStorage = (email: string) => {
+  try {
+    const storageKey = getStorageKey(email)
+    const storedData = sessionStorage.getItem(storageKey)
+    return storedData ? (JSON.parse(storedData) as UserDB) : null
+  } catch (error) {
+    console.warn('Erro ao ler dados do sessionStorage:', error)
+    return null
+  }
+}
+
+const saveUserToStorage = (email: string, userData: UserDB) => {
+  try {
+    const storageKey = getStorageKey(email)
+    sessionStorage.setItem(storageKey, JSON.stringify(userData))
+  } catch (error) {
+    console.warn('Erro ao salvar dados no sessionStorage:', error)
+  }
+}
+
+const clearUserFromStorage = (email: string) => {
+  const storageKey = getStorageKey(email)
+  sessionStorage.removeItem(storageKey)
+}
+
+const fetchOrCreateUserData = async (firebaseUser: User) => {
+  let userData = getUserFromStorage(firebaseUser.email as string)
+
+  if (!userData) {
+    userData = await getUser(firebaseUser.email as string)
+
+    if (!userData) {
+      const userRequest: UserRequest = {
+        name: firebaseUser.displayName as string,
+        email: firebaseUser.email as string,
+      }
+      userData = await createUser(userRequest)
+    }
+
+    saveUserToStorage(firebaseUser.email as string, userData)
+  }
+
+  return userData
+}
 
 interface AuthContextType {
   user: UserProps | null
@@ -30,73 +83,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProps | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Função para gerar chave única do storage
-  const getStorageKey = (email: string) => `userData_${email}`
-
-  // Função para recuperar dados do usuário do sessionStorage
-  const getUserFromStorage = (email: string) => {
-    try {
-      const storageKey = getStorageKey(email)
-      const storedData = sessionStorage.getItem(storageKey)
-      return storedData ? JSON.parse(storedData) : null
-    } catch (error) {
-      console.warn('Erro ao ler dados do sessionStorage:', error)
-      return null
-    }
-  }
-
-  // Função para salvar dados do usuário no sessionStorage
-  const saveUserToStorage = (email: string, userData: any) => {
-    try {
-      const storageKey = getStorageKey(email)
-      sessionStorage.setItem(storageKey, JSON.stringify(userData))
-    } catch (error) {
-      console.warn('Erro ao salvar dados no sessionStorage:', error)
-    }
-  }
-
-  // Função para limpar dados do usuário do sessionStorage
-  const clearUserFromStorage = (email: string) => {
-    const storageKey = getStorageKey(email)
-    sessionStorage.removeItem(storageKey)
-  }
-
-  // Função para buscar ou criar dados do usuário
-  const fetchOrCreateUserData = async (firebaseUser: User) => {
-    let userData = getUserFromStorage(firebaseUser.email as string)
-
-    if (!userData) {
-      userData = await getUser(firebaseUser.email as string)
-
-      if (!userData) {
-        const userRequest: UserRequest = {
-          name: firebaseUser.displayName as string,
-          email: firebaseUser.email as string,
-        }
-        userData = await createUser(userRequest)
-      }
-
-      saveUserToStorage(firebaseUser.email as string, userData)
-    }
-
-    return userData
-  }
-
   // Função para processar mudança de estado de autenticação
-  const handleAuthStateChange = async (firebaseUser: User | null) => {
-    if (firebaseUser) {
-      const userData = await fetchOrCreateUserData(firebaseUser)
-      setUser({ ...firebaseUser, userId: userData.id } as UserProps)
-    } else {
-      setUser(null)
-    }
-    setIsLoading(false)
-  }
+  const handleAuthStateChange = useCallback(
+    async (firebaseUser: User | null) => {
+      if (firebaseUser) {
+        const userData = await fetchOrCreateUserData(firebaseUser)
+        setUser({ ...firebaseUser, userId: userData.id } as UserProps)
+      } else {
+        setUser(null)
+      }
+      setIsLoading(false)
+    },
+    [setIsLoading, setUser],
+  )
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, handleAuthStateChange)
     return () => unsubscribe()
-  }, [])
+  }, [handleAuthStateChange])
 
   const loginWithEmail = async (email: string, password: string) => {
     try {
