@@ -1,38 +1,40 @@
-'use client';
+'use client'
 
-import { useAuth } from '@/contexts/AuthContext';
-import Loading from './Loading';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+import { useAuth } from '@/contexts/AuthContext'
+
+import Loading from './Loading'
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
-  requireAuth?: boolean;
+  children: React.ReactNode
+  requireAuth?: boolean
 }
 
 export default function ProtectedRoute({
   children,
   requireAuth = true,
 }: ProtectedRouteProps) {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
+  const { user, isLoading } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     if (!isLoading) {
       if (requireAuth && !user) {
         // Se precisa de autenticação e não tem usuário, vai para login
-        router.push('/sign-in');
+        router.push('/sign-in')
       } else if (!requireAuth && user) {
         // Se não precisa de autenticação e tem usuário, vai para home
-        router.push('/');
+        router.push('/')
       }
     }
-  }, [user, isLoading, requireAuth]);
+  }, [user, isLoading, requireAuth])
 
   // Mostra loading enquanto verifica
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
-  return <>{children}</>;
+  return <>{children}</>
 }

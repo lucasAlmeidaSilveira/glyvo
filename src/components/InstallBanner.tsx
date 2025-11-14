@@ -1,67 +1,69 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { usePWA } from '@/hooks/usePWA';
-import { X, Download, Smartphone } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Download, Smartphone, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { usePWA } from '@/hooks/usePWA'
 
 export function InstallBanner() {
-  const { canInstall, installApp, isInstalled } = usePWA();
-  const [isVisible, setIsVisible] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
+  const { canInstall, installApp, isInstalled } = usePWA()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
     // Verificar se o usuário já fechou o banner
-    const hasUserDismissed = localStorage.getItem('glyvo-install-banner-dismissed');
-    
+    const hasUserDismissed = localStorage.getItem(
+      'glyvo-install-banner-dismissed',
+    )
+
     // Detectar se é iOS
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIOSDevice);
+    const userAgent = window.navigator.userAgent.toLowerCase()
+    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent)
+    setIsIOS(isIOSDevice)
 
     // Mostrar banner apenas se:
     // 1. Não estiver instalado
     // 2. Puder instalar OU for iOS
     // 3. Usuário não tiver fechado o banner anteriormente
     if (!isInstalled && (canInstall || isIOSDevice) && !hasUserDismissed) {
-      setIsVisible(true);
+      setIsVisible(true)
     }
-  }, [canInstall, isInstalled]);
+  }, [canInstall, isInstalled])
 
   const handleDismiss = () => {
     // Salvar no localStorage que o usuário fechou o banner
-    localStorage.setItem('glyvo-install-banner-dismissed', 'true');
-    setIsVisible(false);
-  };
+    localStorage.setItem('glyvo-install-banner-dismissed', 'true')
+    setIsVisible(false)
+  }
 
-  if (!isVisible) return null;
+  if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-50">
+    <div className="fixed right-4 bottom-4 left-4 z-50 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="bg-blue-100 p-2 rounded-full">
+          <div className="rounded-full bg-blue-100 p-2">
             <Smartphone className="h-5 w-5 text-blue-600" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">Instalar Glyvo</h3>
             <p className="text-sm text-gray-600">
-              {isIOS 
+              {isIOS
                 ? 'Toque em Compartilhar e depois em "Adicionar à Tela Inicial"'
-                : 'Instale o app para acesso rápido e offline'
-              }
+                : 'Instale o app para acesso rápido e offline'}
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           {!isIOS && canInstall && (
             <Button
               onClick={installApp}
               size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 text-white hover:bg-blue-700"
             >
-              <Download className="h-4 w-4 mr-1" />
+              <Download className="mr-1 h-4 w-4" />
               Instalar
             </Button>
           )}
@@ -77,5 +79,5 @@ export function InstallBanner() {
         </div>
       </div>
     </div>
-  );
+  )
 }

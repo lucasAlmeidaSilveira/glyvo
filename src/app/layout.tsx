@@ -1,15 +1,17 @@
-import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
-import './globals.css';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { Analytics } from '@vercel/analytics/next';
-import { InstallBanner } from '@/components/InstallBanner';
+import './globals.css'
+
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata } from 'next'
+import { Poppins } from 'next/font/google'
+
+import { InstallBanner } from '@/components/InstallBanner'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 const poppins = Poppins({
   variable: '--font-poppins',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-});
+})
 
 export const metadata: Metadata = {
   title: 'Glyvo - Controle fácil, vida leve',
@@ -34,47 +36,47 @@ export const metadata: Metadata = {
     'msapplication-TileColor': '#3454D1',
     'msapplication-config': '/browserconfig.xml',
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <AuthProvider>
-      <html lang='pt-BR' className={poppins.variable} suppressHydrationWarning>
+      <html lang="pt-BR" className={poppins.variable} suppressHydrationWarning>
         <head>
-          <link rel='manifest' href='/manifest.json' />
-          <link rel='apple-touch-icon' href='/icons/logo-200.png' />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icons/logo-200.png" />
           <link
-            rel='apple-touch-icon'
-            sizes='152x152'
-            href='/icons/logo-200.png'
+            rel="apple-touch-icon"
+            sizes="152x152"
+            href="/icons/logo-200.png"
           />
           <link
-            rel='apple-touch-icon'
-            sizes='180x180'
-            href='/icons/logo-200.png'
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/icons/logo-200.png"
           />
           <link
-            rel='apple-touch-icon'
-            sizes='167x167'
-            href='/icons/logo-200.png'
+            rel="apple-touch-icon"
+            sizes="167x167"
+            href="/icons/logo-200.png"
           />
-          <meta name='apple-mobile-web-app-capable' content='yes' />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
-            name='apple-mobile-web-app-status-bar-style'
-            content='default'
+            name="apple-mobile-web-app-status-bar-style"
+            content="default"
           />
-          <meta name='apple-mobile-web-app-title' content='Glyvo' />
-          <meta name='mobile-web-app-capable' content='yes' />
-          <meta name='theme-color' content='#3454D1' />
-          <meta name='msapplication-TileColor' content='#3454D1' />
-          <meta name='msapplication-TileImage' content='/logoIconPrimary.svg' />
+          <meta name="apple-mobile-web-app-title" content="Glyvo" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="theme-color" content="#3454D1" />
+          <meta name="msapplication-TileColor" content="#3454D1" />
+          <meta name="msapplication-TileImage" content="/logoIconPrimary.svg" />
         </head>
         <body
-          className={'font-sans bg-gradient-to-b from-[#3454D1] to-[#2843AF]'}
+          className={'bg-gradient-to-b from-[#3454D1] to-[#2843AF] font-sans'}
         >
           {children}
           <Analytics />
@@ -82,5 +84,5 @@ export default function RootLayout({
         </body>
       </html>
     </AuthProvider>
-  );
+  )
 }

@@ -1,19 +1,20 @@
-'use client';
+'use client'
 
-import { MealProps } from '@/types/meals';
-import { getMeals } from '@/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
+
+import { getMeals } from '@/api'
+import { MealProps } from '@/types/meals'
 
 export function useMeal() {
-  const [meals, setMeals] = useState<MealProps[]>([]);
+  const [meals, setMeals] = useState<MealProps[]>([])
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await getMeals();
-      setMeals(response.data);
-    };
-    fetchMeals();
-  }, []);
+      const response = await getMeals()
+      setMeals(response.data)
+    }
+    fetchMeals()
+  }, [])
 
-  return { meals };
+  return { meals }
 }

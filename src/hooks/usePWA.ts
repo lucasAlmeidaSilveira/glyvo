@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 export function usePWA() {
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 
   useEffect(() => {
     // Registrar service worker
@@ -10,56 +10,56 @@ export function usePWA() {
       navigator.serviceWorker
         .register('/sw.js')
         .then((registration) => {
-          console.log('SW registered: ', registration);
+          console.log('SW registered: ', registration)
         })
         .catch((registrationError) => {
-          console.log('SW registration failed: ', registrationError);
-        });
+          console.log('SW registration failed: ', registrationError)
+        })
     }
 
     // Detectar se o app já está instalado
     const checkIfInstalled = () => {
       if (window.matchMedia('(display-mode: standalone)').matches) {
-        setIsInstalled(true);
+        setIsInstalled(true)
       }
-    };
+    }
 
-    checkIfInstalled();
+    checkIfInstalled()
 
     // Listener para o evento beforeinstallprompt
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    });
+      e.preventDefault()
+      setDeferredPrompt(e)
+    })
 
     // Listener para detectar mudanças no modo de exibição
     window.addEventListener('appinstalled', () => {
-      setIsInstalled(true);
-      setDeferredPrompt(null);
-    });
+      setIsInstalled(true)
+      setDeferredPrompt(null)
+    })
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', () => {});
-      window.removeEventListener('appinstalled', () => {});
-    };
-  }, []);
+      window.removeEventListener('beforeinstallprompt', () => {})
+      window.removeEventListener('appinstalled', () => {})
+    }
+  }, [])
 
   const installApp = async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
       if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
+        console.log('User accepted the install prompt')
       } else {
-        console.log('User dismissed the install prompt');
+        console.log('User dismissed the install prompt')
       }
-      setDeferredPrompt(null);
+      setDeferredPrompt(null)
     }
-  };
+  }
 
   return {
     isInstalled,
     canInstall: !!deferredPrompt,
     installApp,
-  };
+  }
 }

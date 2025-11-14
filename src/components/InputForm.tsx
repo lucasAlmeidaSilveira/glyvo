@@ -1,25 +1,25 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { redirect } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
-import { Button } from '@/components/ui/button';
+import { registerReading } from '@/api'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { registerReading } from '@/api';
-import { getTime } from '@/tools/tools';
-import { ReadingRequest } from '@/types/reading';
-import { useAuth } from '@/contexts/AuthContext';
-import { useState } from 'react';
-import { redirect } from 'next/navigation';
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/contexts/AuthContext'
+import { getTime } from '@/tools/tools'
+import { ReadingRequest } from '@/types/reading'
 
 const FormSchema = z.object({
   dataHora: z.string().min(1, {
@@ -31,69 +31,69 @@ const FormSchema = z.object({
       message: 'Por favor, digite o valor da glicemia.',
     })
     .max(3)
-    .refine(val => !isNaN(Number(val)) && Number(val) > 0, {
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: 'A glicemia deve ser um número válido maior que zero.',
     }),
-});
+})
 
 export function InputForm() {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       dataHora: getTime(new Date()),
       glicemia: '',
     },
-  });
+  })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Converter a string datetime-local para um objeto Date
-    const dataHora = new Date(data.dataHora);
+    const dataHora = new Date(data.dataHora)
 
     const readingRequest: ReadingRequest = {
       userId: user?.userId as string,
       date: dataHora,
       value: Number(data.glicemia),
-    };
+    }
 
-    setIsLoading(true);
-    const response = await registerReading(readingRequest);
-    const dataResponse = response.data;
+    setIsLoading(true)
+    const response = await registerReading(readingRequest)
+    const dataResponse = response.data
 
     toast.success(response.message, {
       description: (
-        <span className='text-sm'>
+        <span className="text-sm">
           {dataResponse.meal}{' '}
-          <strong className='text-md'>| {dataResponse.value} mg/dL</strong>
+          <strong className="text-md">| {dataResponse.value} mg/dL</strong>
         </span>
       ),
       action: {
         label: 'Ver glicemias',
         onClick: () => {
-          redirect('/glicemias');
+          redirect('/glicemias')
         },
       },
-    });
+    })
 
     // Limpar o formulário após envio
-    form.reset();
-    setIsLoading(false);
+    form.reset()
+    setIsLoading(false)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
         <FormField
           control={form.control}
-          name='dataHora'
+          name="dataHora"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input
-                  type='datetime-local'
-                  className='w-full text-center p-5'
+                  type="datetime-local"
+                  className="w-full p-5 text-center"
                   {...field}
                 />
               </FormControl>
@@ -104,16 +104,16 @@ export function InputForm() {
 
         <FormField
           control={form.control}
-          name='glicemia'
+          name="glicemia"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder='Digite sua glicemia'
-                  type='number'
-                  min='1'
-                  step='1'
-                  className='w-full text-center p-5'
+                  placeholder="Digite sua glicemia"
+                  type="number"
+                  min="1"
+                  step="1"
+                  className="w-full p-5 text-center"
                   {...field}
                 />
               </FormControl>
@@ -123,16 +123,16 @@ export function InputForm() {
         />
 
         <Button
-          type='submit'
-          className='w-full text-lg py-6'
+          type="submit"
+          className="w-full py-6 text-lg"
           disabled={isLoading}
         >
           {isLoading ? (
-            <div className='flex items-center gap-2'>
+            <div className="flex items-center gap-2">
               <img
-                src='/logoIconPrimary.svg'
-                alt='Logo'
-                className='w-8 h-8 animate-spin'
+                src="/logoIconPrimary.svg"
+                alt="Logo"
+                className="h-8 w-8 animate-spin"
               />
               Enviando...
             </div>
@@ -142,5 +142,5 @@ export function InputForm() {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

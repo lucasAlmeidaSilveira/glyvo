@@ -1,9 +1,9 @@
 export type MealProps = {
-  id: number;
-  name: string;
-};
+  id: number
+  name: string
+}
 
 export interface MealsResponse {
-  message: string;
-  data: MealProps[];
+  message: string
+  data: MealProps[]
 }
