@@ -1,24 +1,25 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FaFileLines } from 'react-icons/fa6'
+import { BsFileSpreadsheet } from 'react-icons/bs'
 import { IoAddCircle } from 'react-icons/io5'
+import { MdBloodtype } from 'react-icons/md'
 
 export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <div className="bg-primary-foreground fixed bottom-0 flex w-full justify-center px-4 py-1 pb-4 shadow-md">
+    <div className="bg-primary-foreground fixed bottom-0 flex w-full justify-center px-4 py-2 pb-7 shadow-md">
       <div className="mx-2 flex w-full justify-evenly">
         <Link
           href="/glicemias"
           className={`flex flex-col items-center justify-center ${pathname === '/glicemias' ? 'text-primary' : 'text-foreground/40'} hover:text-primary/70 transition-colors`}
         >
-          <FaFileLines size={20} />
+          <MdBloodtype size={20} />
           <span className="text-xs font-semibold">Glicemias</span>
         </Link>
         <Link
           href="/"
-          className="mt-[-24px] flex flex-col items-center justify-center"
+          className="mt-[-40px] flex flex-col items-center justify-center"
         >
           <IoAddCircle
             className="text-primary rounded-full bg-white"
@@ -29,7 +30,7 @@ export default function Navbar() {
           href="/spreadsheets"
           className={`flex flex-col items-center justify-center ${pathname === '/spreadsheets' ? 'text-primary' : 'text-foreground/40'} hover:text-primary/70 transition-colors`}
         >
-          <FaFileLines size={20} />
+          <BsFileSpreadsheet strokeWidth={0.3} size={20} />
           <span className="text-xs font-semibold">Planilhas</span>
         </Link>
       </div>

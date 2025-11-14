@@ -1,5 +1,3 @@
-import { toUTC } from '@/lib'
-
 export function getTime(date: Date): string {
   // Usar a data atual se nenhuma data for fornecida
   const currentDate = date || new Date()
@@ -34,6 +32,16 @@ export function formatDate(date: Date): string {
   } else {
     return `${day}/${month}/${year} ${hours}:${minutes}`
   }
+}
+
+// Retorna a data no formato DD/MM/YYYY
+export function formatDateData(date: Date): string {
+  const dateNewDate = new Date(date)
+  const year = dateNewDate.getFullYear()
+  const month = String(dateNewDate.getMonth() + 1).padStart(2, '0') // 0-11
+  const day = String(dateNewDate.getDate()).padStart(2, '0') // 1-31
+
+  return `${day}/${month}/${year}`
 }
 
 // Função auxiliar para formatar data para input type="date"

@@ -7,12 +7,8 @@ import { FaPen, FaTrash } from 'react-icons/fa6'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import {
-  deleteReading,
-  generateSpreadsheet,
-  getReadings,
-  updateReading,
-} from '@/api'
+import { deleteReading, getReadings, updateReading } from '@/api'
+import { GenerateSpreadsheet } from '@/components/GenerateSpreadSheet'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,12 +21,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogClose,
@@ -41,14 +32,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
@@ -61,17 +45,8 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/contexts/AuthContext'
 import { useMeal } from '@/hooks/useMeal'
-import {
-  formatDate,
-  formatDateForInput,
-  parseDateFromInput,
-} from '@/tools/tools'
+import { formatDate } from '@/tools/tools'
 import { FormUpdateReadingSchema, Reading } from '@/types/reading'
-import {
-  FormGenerateSpreadsheet,
-  FormGenerateSpreadsheetSchema,
-  SpreadsheetResponse,
-} from '@/types/spreadsheet'
 
 export default function Glicemias() {
   const { user } = useAuth()
@@ -98,7 +73,7 @@ export default function Glicemias() {
     if (user?.userId) {
       fetchReadings()
     }
-  }, [fetchReadings])
+  }, [fetchReadings, user?.userId])
 
   const handleDeleteReading = useCallback(async (readingId: number) => {
     try {
@@ -114,7 +89,7 @@ export default function Glicemias() {
   return (
     <div className="mx-4 flex flex-col gap-4">
       <Card className="flex min-w-[320px] bg-white p-4">
-        <CardDescription>
+        <CardContent className="p-0">
           <ScrollArea className="h-[calc(100vh-340px)]">
             <div className="flex flex-col gap-2">
               {isLoading ? (
@@ -231,9 +206,9 @@ export default function Glicemias() {
               )}
             </div>
           </ScrollArea>
-        </CardDescription>
+        </CardContent>
       </Card>
-      {user?.userId && <GenerateSpreadsheetDialog userId={user.userId} />}
+      {user?.userId && <GenerateSpreadsheet userId={user.userId} />}
     </div>
   )
 }
@@ -348,137 +323,5 @@ function EditReadingDialog({
         </DialogDescription>
       </DialogHeader>
     </DialogContent>
-  )
-}
-
-function GenerateSpreadsheetDialog({ userId }: { userId: string }) {
-  const [open, setOpen] = useState(false)
-
-  const form = useForm<FormGenerateSpreadsheet>({
-    resolver: zodResolver(FormGenerateSpreadsheetSchema),
-    defaultValues: {
-      startDate: new Date(),
-      endDate: new Date(),
-    },
-  })
-
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-  } = form
-
-  async function onSubmit(data: FormGenerateSpreadsheet) {
-    try {
-      toast.promise(
-        generateSpreadsheet(
-          userId,
-          data.startDate.toISOString().split('T')[0],
-          data.endDate.toISOString().split('T')[0],
-        ),
-        {
-          loading: 'Gerando planilha...',
-          success: (response) => {
-            if (response?.data?.url) {
-              window.open(response.data.url, '_blank')
-            }
-            reset()
-            setOpen(false)
-            return {
-              message: 'Planilha gerada com sucesso!',
-              action: {
-                label: 'Abrir planilha',
-                onClick: () => window.open(response.data.url, '_blank'),
-              },
-            }
-          },
-          error: 'Erro ao gerar planilha. Tente novamente.',
-        },
-      )
-    } catch (error) {
-      console.error('Erro ao gerar planilha:', error)
-      toast.error('Erro ao gerar planilha. Tente novamente.')
-    }
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary" size="lg">
-          Gerar planilha
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Gerar planilha de glicemias</DialogTitle>
-          <DialogDescription>
-            Selecione uma data inicial e final para gerar a planilha
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mt-2 flex flex-col gap-4"
-          >
-            <div className="flex w-full gap-2">
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Data inicial</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        value={formatDateForInput(field.value)}
-                        onChange={(e) => {
-                          const date = parseDateFromInput(e.target.value)
-                          if (date) {
-                            field.onChange(date)
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Data final</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        value={formatDateForInput(field.value)}
-                        onChange={(e) => {
-                          const date = parseDateFromInput(e.target.value)
-                          if (date) {
-                            field.onChange(date)
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="secondary" type="button">
-                  Cancelar
-                </Button>
-              </DialogClose>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Gerando...' : 'Gerar planilha'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
   )
 }

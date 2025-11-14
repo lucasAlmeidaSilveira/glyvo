@@ -3,16 +3,15 @@
 import { User } from 'firebase/auth'
 import Link from 'next/link'
 import { useState } from 'react'
-import { FaFileLines } from 'react-icons/fa6'
+import { BsFileSpreadsheet } from 'react-icons/bs'
 import { ImExit } from 'react-icons/im'
-import { IoClose, IoMenu } from 'react-icons/io5'
+import { IoAddCircle, IoMenu } from 'react-icons/io5'
+import { MdBloodtype } from 'react-icons/md'
 
-import Logo from './Logo'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -63,7 +62,10 @@ export default function Menu({ user, logout }: MenuProps) {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1"
               >
-                <Logo variant="icon" size={24} />
+                <IoAddCircle
+                  size={28}
+                  className="bg-primary rounded-full p-1 text-white"
+                />
                 <span className="text-lg font-semibold">Enviar glicemia</span>
               </Link>
               <Link
@@ -71,11 +73,23 @@ export default function Menu({ user, logout }: MenuProps) {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1"
               >
-                <FaFileLines
-                  size={24}
+                <MdBloodtype
+                  size={28}
                   className="bg-primary rounded-full p-1 text-white"
                 />
                 <span className="text-lg font-semibold">Glicemias</span>
+              </Link>
+              <Link
+                href="/spreadsheets"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1"
+              >
+                <BsFileSpreadsheet
+                  size={28}
+                  strokeWidth={0.2}
+                  className="bg-primary rounded-full p-1 text-white"
+                />
+                <span className="text-lg font-semibold">Planilhas</span>
               </Link>
             </div>
           </div>

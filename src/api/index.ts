@@ -1,6 +1,6 @@
 import { MealsResponse } from '@/types/meals'
-import { SpreadsheetResponse } from '@/types/spreadsheet'
-import type { UserDB, UserRequest, UserResponse } from '@/types/user'
+import { SpreadsheetResponse, SpreadsheetsResponse } from '@/types/spreadsheet'
+import type { UserRequest, UserResponse } from '@/types/user'
 
 import {
   ReadingRequest,
@@ -144,6 +144,25 @@ export async function generateSpreadsheet(
       },
     )
     const data: SpreadsheetResponse = await response.json()
+    return data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export async function getSpreadsheets(
+  userId: string,
+): Promise<SpreadsheetsResponse> {
+  try {
+    // Monta a query string com os parâmetros opcionais
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/spreadsheets/${userId}`,
+      {
+        method: 'GET',
+      },
+    )
+    const data: SpreadsheetsResponse = await response.json()
     return data
   } catch (error) {
     console.error(error)

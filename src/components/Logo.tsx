@@ -3,9 +3,11 @@ import Image from 'next/image'
 export default function Logo({
   variant = 'full',
   size = 180,
+  className,
 }: {
   variant?: 'full' | 'icon'
   size?: number
+  className?: string
 }) {
   return (
     <Image
@@ -14,6 +16,7 @@ export default function Logo({
       alt="Glyvo logo"
       width={size}
       height={size}
+      className={className}
     />
   )
 }
