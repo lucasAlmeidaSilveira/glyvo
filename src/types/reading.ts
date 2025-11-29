@@ -12,6 +12,13 @@ export type ReadingUpdateRequest = {
   value: number
 }
 
+export type Reading = {
+  id: number
+  date: Date
+  meal: string
+  value: number
+}
+
 export type ReadingsResponse = {
   message: string
   data: Reading[]
@@ -20,13 +27,6 @@ export type ReadingsResponse = {
 export type ReadingResponse = {
   message: string
   data: Reading
-}
-
-export type Reading = {
-  id: number
-  date: Date
-  meal: string
-  value: number
 }
 
 export const FormUpdateReadingSchema = z.object({

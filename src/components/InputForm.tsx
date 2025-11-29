@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -129,7 +130,7 @@ export function InputForm() {
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 src="/logoIconPrimary.svg"
                 alt="Logo"
                 className="h-8 w-8 animate-spin"

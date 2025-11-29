@@ -22,7 +22,7 @@ import { UserDB, UserProps, UserRequest } from '@/types/user'
 
 const getStorageKey = (email: string) => `userData_${email}`
 
-const getUserFromStorage = (email: string) => {
+const getUserFromStorage = (email: string): UserDB | null => {
   try {
     const storageKey = getStorageKey(email)
     const storedData = sessionStorage.getItem(storageKey)
