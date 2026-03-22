@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/api-base'
 import { MealsResponse } from '@/types/meals'
 import { SpreadsheetResponse, SpreadsheetsResponse } from '@/types/spreadsheet'
 import type { UserRequest, UserResponse } from '@/types/user'
@@ -12,7 +13,7 @@ import {
 export async function getUser(email: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/${email}`,
+      apiUrl(`/users/${encodeURIComponent(email)}`),
     )
     if (response.status === 404) {
       return null
@@ -27,7 +28,7 @@ export async function getUser(email: string) {
 
 export async function createUser(body: UserRequest) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+    const response = await fetch(apiUrl('/users'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,16 +47,13 @@ export async function createUser(body: UserRequest) {
 
 export async function registerReading(body: ReadingRequest) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/readings`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+    const response = await fetch(apiUrl('/readings'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      body: JSON.stringify(body),
+    })
 
     const data: ReadingResponse = await response.json()
 
@@ -68,9 +66,7 @@ export async function registerReading(body: ReadingRequest) {
 
 export async function getReadings(userId: string) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/readings/${userId}`,
-    )
+    const response = await fetch(apiUrl(`/readings/${userId}`))
     const data: ReadingsResponse = await response.json()
     return data
   } catch (error) {
@@ -81,12 +77,9 @@ export async function getReadings(userId: string) {
 
 export async function deleteReading(readingId: number) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/readings/${readingId}`,
-      {
-        method: 'DELETE',
-      },
-    )
+    const response = await fetch(apiUrl(`/readings/${readingId}`), {
+      method: 'DELETE',
+    })
     const data: ReadingResponse = await response.json()
     return data
   } catch (error) {
@@ -100,16 +93,13 @@ export async function updateReading(
   body: ReadingUpdateRequest,
 ) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/readings/${readingId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+    const response = await fetch(apiUrl(`/readings/${readingId}`), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      body: JSON.stringify(body),
+    })
     const data: ReadingResponse = await response.json()
     return data
   } catch (error) {
@@ -120,7 +110,7 @@ export async function updateReading(
 
 export async function getMeals() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals`)
+    const response = await fetch(apiUrl('/meals'))
     const data: MealsResponse = await response.json()
     return data
   } catch (error) {
@@ -135,10 +125,9 @@ export async function generateSpreadsheet(
   endDate: string,
 ): Promise<SpreadsheetResponse> {
   try {
-    // Monta a query string com os parâmetros opcionais
     const params = new URLSearchParams({ userId, startDate, endDate })
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/spreadsheets?${params.toString()}`,
+      apiUrl(`/spreadsheets?${params.toString()}`),
       {
         method: 'POST',
       },
@@ -155,13 +144,9 @@ export async function getSpreadsheets(
   userId: string,
 ): Promise<SpreadsheetsResponse> {
   try {
-    // Monta a query string com os parâmetros opcionais
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/spreadsheets/${userId}`,
-      {
-        method: 'GET',
-      },
-    )
+    const response = await fetch(apiUrl(`/spreadsheets/${userId}`), {
+      method: 'GET',
+    })
     const data: SpreadsheetsResponse = await response.json()
     return data
   } catch (error) {

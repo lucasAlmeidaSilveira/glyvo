@@ -131,6 +131,8 @@ export function InputForm() {
           {isLoading ? (
             <div className="flex items-center gap-2">
               <Image
+                width={32}
+                height={32}
                 src="/logoIconPrimary.svg"
                 alt="Logo"
                 className="h-8 w-8 animate-spin"
